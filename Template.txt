@@ -1,0 +1,263 @@
+steps
+dh project 
+git clone https://github.com/bondar-artem/pw-practice-app.git
+npm install --force
+
+// dh run the application
+npm start   
+
+open -> http://localhost:4200/pages/iot-dashboard
+------------------------------create javascrip project ------------------------------------------------------
+- npm init 
+- click enter to add package.json is the configuration file has all dependences , dev dependences
+to run the code 
+    node lesson1.js
+--------------------------------------------------------------------------------------------------------------
+install ----->  npm init playwright@latest
+select language:  -TypeScript is the default script
+--------------folders---------------------------------------------------------------------------
+node_modules ----->  has a node jsapplications in libraries 
+
+tests ----->  has examples.ts
+
+playwright.config.ts ----->  has configuration
+ projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+	
+package.json ----->  has all dependences like "@playwright/test": "^1.42.0",
+
+{
+  "name": "playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.42.0",
+    "@types/node": "^20.11.24"
+  }
+}
+
+-----------------------------------------------------------------
+runner --------> npx playwright test
+it will run in parralle 
+has 2 tests 
+has 3 browser on playwright.config.ts
+
+
+reporting -------->   npx playwright show-report 
+
+run on specsif browser  on headless -------> npx playwright test --project=chromium 
+
+run on specsif browser  on actual browser-------> npx playwright test --project=chromium --headed
+
+run on particular file   -------> npx playwright test example.spec.ts --project=chromium --headed
+
+run on specsifc -------> npx playwright test -g "gas title" --project=chromium --headed
+
+
+1.1   test.skip()  
+1.2   npx playwright test  --project=chromium
+1.3   npx playwright show-report 
+
+
+2.1  test.only
+2.2  npx playwright test  --project=chromium
+2.3  npx playwright show-report 
+
+--------------------------UI [test explorer]-----------------------------------------------------------------------
+run testcases UI [test explorer]
+run command for UI ----> npx playwright test --ui
+
+
+--------------------trace your code----------------------------------------------------
+-----> npx playwright test --project=chromium --trace on
+-----> npx playwright show-report
+-----> npx playwright test --project=chromium --debug
+
+
+------------------import test for @playwright/test------------------------------
+0. npm init playwright@latest
+
+1.import {test } form '@playwright/test'
+
+/////////to group number of test using describe
+2.test.describe('', ()=>{
+
+})
+
+.test('my first test ', ({page})=>{
+page.goto('');
+})
+
+3.page --------> is one the fixture  , blank page of browser
+
+we have:
+- browser fixture 
+- page fixture 
+- page reprensts 
+
+4.run applicatiion > npm start
+5.after run will fail because 'Promise' is dh if successfull or not successfull wait for response 
+6. use await & Async to solve the problem
+
+-------------------hoocks--------------------------------------------------------------------------------------
+/////////////////use it to beforEach step 
+1.test.beforeEach(async({page})=>{
+    await page.goto('http://localhost:4200/');
+    await page.getByText('Forms').click()
+	await page.getByText({'Form Layouts'}).click()
+})
+--------------------------------------------------------------
+-----------------------------------------------------------------
+test('Locator syntax ' ,async ({page})=>{
+
+   //by tag name
+   page.locator('input')
+   
+   //by ID
+   page.locator('#inputEmail')
+   
+   //by class value 
+   page.locator('.shap-retangle')
+   
+   //by attribute
+   page.locator('{place="Email"}'})
+   
+   //by class value full
+   page.locator('{class="input-full size"}')
+   
+   //by combine different selectors
+   //page.locator('input[placeholder="Email"]')
+
+
+    // by xpath  no recommmeced
+	page.locator('//*[@id="inputEmail"]')
+	
+	
+	// by partial text match 
+	page.locator(':text("Using")')
+	
+	//by exact text match
+	page.locator(:text-is("Using the grid"))
+	
+})
+-----------------------------------------------------------------------------------------------------------------------------------
+	// dh run the application 
+	npm start  
+		  
+	// dh run   
+	npx playwright test firsttest.speccopy.ts --ui
+   
+   
+   // dh for select first name 
+   await page.locator('input').first().click()  
+
+----------------user facing locator-----------------------------------------------------
+// dh el types of fields on the page 
+   page.getByRole('textbox',{name:"Email"}).first().click()
+   page.getByRole('button',{name: "Sing in"}).first().click()
+
+
+   //ByLabel
+   page.getByLabel('Email').first().click();
+
+
+  //Byplaceholder attribute
+   page.getByplaceholder('').click()
+
+  //getByText
+   page.getByText('')
+
+  //getByTitle attribute
+  page.getByTitle('')  
+
+===================================conclusion==============================================================================
+	npm start   //to run the project 
+		  
+	npx playwright test firsttest.spec.ts --ui // run the test on the UI
+
+    npm init playwright@latest   // install playwright
+
+    npx playwright show-report  // reporting
+
+    npx playwright test --project=chromium  // run on speific browser  on headless
+
+	beforEach
+	afterEach
+	beforeAll
+	afterAll			
+
+	goto
+	locator
+	getByRole
+	ByLabel
+	Byplaceholder
+	getByText
+	getByTitle
+    expect(allradriobutton).toContain("Option 1")
+	expect(allradriobutton).toEqual("Option 1")
+    expect(emailField).toHaveValue('Welcome@test.com')
+
+
+
+	await page.locator('nb-card').filter({hasText: "Basic form"}).getByRole('textbox',{name:"Email"}).fill('test@test')
+	expect(received).toEqual(expected)
+	expect(allradriobutton).toContain("Option 1")
+
+-------------------------------------auto wait----------------------------------------------------------------
+aurto wait > 30 sec
+
+---------------------------------------checkbox--------------------------------------------------
+click -> dh performing the click on checkbox without checking 
+check ->  check the checkbox and its check if it check or not 
+uncheck -> uncheck the checkbox
+{force:true}  -> enforce the action fe 7alet hidden
+
+
+example :
+ await page.getByRole('checkbox',{name: "Hide on click"}).uncheck({force:true})
+
+--------------------------------------dropdown list------------------------------------------------------------------------
+test('dropdownlist page',async ({page}) =>{ 
+
+
+   const dropdown = page.locator('ngx-header nb-select')
+   await dropdown.click(); 
+
+
+   page.getByRole('list')  // when list has tag UL  tag
+   page.getByRole('listitem')  // when the list has LI tag
+
+
+    const optionlist = page.locator('nb-option-list nb-option')
+    await expect(optionlist).toHaveText(["Light", "Dark","Cosmic","Corporate"])
+    await optionlist.filter({hasText: "Cosmic"}).click()
+
+})
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
